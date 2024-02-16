@@ -1,32 +1,16 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import useFetch from "./hooks/useFetch";
 
 console.clear();
 
 function App() {
+  const { data, loading, error } = useFetch(
+    "https://newsapi.org/v2/top-headlines?country=de&apiKey=3db50491d0be4ffd811c0190a3d43a9b"
+  );
   const [newsObject, setNewsObject] = useState("");
   const [newsArray, setNewsArray] = useState([]);
   const [urlString, setUrlString] = useState("");
-
-  useEffect(() => {
-    fetch(
-      "https://newsapi.org/v2/top-headlines?country=de&apiKey=3db50491d0be4ffd811c0190a3d43a9b"
-    )
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        console.log(data.articles);
-        console.log(data.articles);
-        setNewsObject(data);
-        setNewsArray(data.articles);
-      })
-      .catch((error) => console.error("Error: ", error));
-  }, []);
 
   const clickHandler = () => {
     console.log("ya<");
@@ -43,7 +27,6 @@ function App() {
             <button className="currentNews__remove">x</button>
           </div>
           <div className="addNews__container">
-            <div type="dropdown"></div>
             {/* <label htmlFor="countries">add country</label>
             <select
               className="dropdown"
@@ -64,7 +47,7 @@ function App() {
           </div>
         </div>
         <ul role="list" className="row gap">
-          {newsArray.map((item, i) => (
+          {data.map((item, i) => (
             <li key={i} onClick={() => clickHandler} className="card">
               <article>
                 <div>Author: {item.author}</div>

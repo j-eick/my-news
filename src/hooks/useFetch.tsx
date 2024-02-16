@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-export default function useFetch({ url }: { url: string }) {
-  const [fetchedUrl, setFetchedURL] = useState(url);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [fetchedData, setFetchedData] = useState([]);
+export default function useFetch(url: string) {
+  const fetchedUrl = url;
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(fetchedUrl);
+        const res = await fetch(url);
         if (!res.ok) {
-          throw new Error("Error: " + Error);
+          throw new Error("Error: " + res.statusText);
         }
-        const fetchedData = await res.json();
-        setFetchedData(fetchedData);
-      } catch (error) {
+        const data = await res.json();
+
+        setData(data.articles);
+      } catch (error: any) {
         setError(error);
       } finally {
         setLoading(false);
@@ -25,23 +26,9 @@ export default function useFetch({ url }: { url: string }) {
     };
 
     fetchData();
-  }, [fetchedUrl]);
+    console.log(data);
+    console.log(fetchedUrl);
+  }, [url]);
 
-  return { fetchedData, loading, error };
-
-  // async() => {
-  // .then((res) => {
-  //   if (!res.ok) {
-  //     throw new Error("fetching didn't work");
-  //   }
-  //   return res.json();
-  //   setLoading(true);
-  // })
-  // .then((data) => {
-  //   setFetchedData(data);
-  //   setLoading(false);
-  // })
-  // .catch((error) => console.log("Error: " + error));
-
-  return <div>useFetch</div>;
+  return { data, loading, error };
 }
