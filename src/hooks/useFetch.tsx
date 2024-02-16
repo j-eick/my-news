@@ -27,8 +27,7 @@ export default function useFetch(url: string) {
 
     fetchData();
     console.log(data);
-    console.log(fetchedUrl);
   }, [url]);
 
-  return { data, loading, error };
+  return { data, loading, error, fetchedUrl };
 }

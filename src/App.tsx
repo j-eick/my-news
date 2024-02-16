@@ -5,12 +5,13 @@ import useFetch from "./hooks/useFetch";
 console.clear();
 
 function App() {
-  const { data, loading, error } = useFetch(
-    "https://newsapi.org/v2/top-headlines?country=de&apiKey=3db50491d0be4ffd811c0190a3d43a9b"
+  const { data, loading, error, fetchedUrl } = useFetch(
+    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${
+      import.meta.env.VITE_apiKEY
+    }`
   );
-  const [newsObject, setNewsObject] = useState("");
-  const [newsArray, setNewsArray] = useState([]);
-  const [urlString, setUrlString] = useState("");
+
+  console.log(fetchedUrl);
 
   const clickHandler = () => {
     console.log("ya<");
@@ -46,17 +47,19 @@ function App() {
             </select> */}
           </div>
         </div>
-        <ul role="list" className="row gap">
-          {data.map((item, i) => (
-            <li key={i} onClick={() => clickHandler} className="card">
-              <article>
-                <div>Author: {item.author}</div>
-                <h1 className="card__title"> {item.title}</h1>
-                <div>Quelle: {item.source.name}</div>
-              </article>
-            </li>
-          ))}
-        </ul>
+        {data && (
+          <ul role="list" className="row gap">
+            {data.map((item, i) => (
+              <li key={i} onClick={() => clickHandler} className="card">
+                <article>
+                  <div>Author: {item.author}</div>
+                  <h1 className="card__title"> {item.title}</h1>
+                  <div>Quelle: {item.source.name}</div>
+                </article>
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
     </div>
   );
