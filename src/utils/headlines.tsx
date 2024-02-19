@@ -1,4 +1,10 @@
-export const headlinesArray = [
+type HeadlinesArrayProps = {
+  country: string;
+  handle: string;
+  url: string;
+};
+
+export const headlinesArray: HeadlinesArrayProps[] = [
   {
     country: "germany",
     handle: "de",

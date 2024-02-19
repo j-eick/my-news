@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import useFetchNews from "./hooks/useFetchNews.tsx";
-import { headlinesArray } from "../src/utils/headlines.js";
+import { headlinesArray } from "./utils/headlines.js";
 
 console.clear();
 
