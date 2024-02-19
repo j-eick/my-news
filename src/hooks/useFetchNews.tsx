@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-export default function useFetch(url: string) {
+/**
+ *
+ * @param url
+ * @returns fetches
+ */
+export default function useFetchNews(url: string) {
   const fetchedUrl = url;
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
-  const [data, setData] = useState([]);
+  const [newsData, setnewsData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,7 +22,7 @@ export default function useFetch(url: string) {
         }
         const data = await res.json();
 
-        setData(data.articles);
+        setnewsData(data.articles);
       } catch (error: any) {
         setError(error);
       } finally {
@@ -26,8 +31,7 @@ export default function useFetch(url: string) {
     };
 
     fetchData();
-    console.log(data);
   }, [url]);
 
-  return { data, loading, error, fetchedUrl };
+  return { newsData, loading, error, fetchedUrl };
 }

@@ -1,21 +1,41 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import useFetch from "./hooks/useFetch";
+import useFetchNews from "./hooks/useFetchNews.tsx";
+import { headlinesArray } from "../src/utils/headlines.js";
 
 console.clear();
 
 function App() {
-  const { data, loading, error, fetchedUrl } = useFetch(
-    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${
+  const [headlines, setHeadlines] = useState([]);
+
+  // OLD: fetching single source via HOOK
+  const { newsData, loading, error, fetchedUrl } = useFetchNews(
+    `https://newsapi.org/v2/top-headlines?country=de&apiKey=${
       import.meta.env.VITE_apiKEY
     }`
   );
 
-  console.log(fetchedUrl);
+  /**
+   * Initial Promise.all() to fetch headline-news:
+   *  - de, us, cn
+   */
+  useEffect(() => {
+    // async call => waiting for promises
+    const initialHeadlines = async () => {
+      const res = await headlinesArray.map((country) =>
+        fetch(country.url + import.meta.env.VITE_apiKEY)
+          .then((res) => res.json())
+          .then((data) => data.articles)
+          .catch((err) => "Mishap happened: " + err)
+      );
 
-  const clickHandler = () => {
-    console.log("ya<");
-  };
+      const promisedNews = await Promise.all(res);
+      setHeadlines(promisedNews);
+      console.log(promisedNews);
+    };
+
+    initialHeadlines();
+  }, [headlinesArray]);
 
   return (
     <div className="container">
@@ -27,39 +47,24 @@ function App() {
             <p className="currentNews__countries">Ger</p>
             <button className="currentNews__remove">x</button>
           </div>
-          <div className="addNews__container">
-            {/* <label htmlFor="countries">add country</label>
-            <select
-              className="dropdown"
-              name="countries"
-              id="countries"
-              aria-label="select a country"
-            >
-              <option className="option" value="China" disabled selected hidden>
-                +
-              </option>
-              <option className="option" value="China">
-                China
-              </option>
-              <option className="option" value="US">
-                U.S.
-              </option>
-            </select> */}
-          </div>
+          <div className="addNews__container"></div>
         </div>
-        {data && (
-          <ul role="list" className="row gap">
-            {data.map((item, i) => (
-              <li key={i} onClick={() => clickHandler} className="card">
-                <article>
-                  <div>Author: {item.author}</div>
-                  <h1 className="card__title"> {item.title}</h1>
-                  <div>Quelle: {item.source.name}</div>
-                </article>
-              </li>
+        <section className="col gap">
+          {headlines &&
+            headlines.map((country, i) => (
+              <ul key={i} role="list" className="row gap">
+                {country.map((news, k) => (
+                  <li key={k} className="card">
+                    <article>
+                      <p>{news.author}</p>
+                      <h1 className="card__title">{news.title}</h1>
+                      <p>Quelle: {news.source.name}</p>
+                    </article>
+                  </li>
+                ))}
+              </ul>
             ))}
-          </ul>
-        )}
+        </section>
       </main>
     </div>
   );

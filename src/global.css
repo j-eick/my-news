@@ -37,6 +37,10 @@ main {
   margin: 2rem 0;
 }
 
+section {
+  border: 3px solid lightgreen;
+}
+
 [role="list"] {
   list-style-type: none;
 }
