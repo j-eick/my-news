@@ -1,19 +1,30 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import useFetchNews from "./hooks/useFetchNews.tsx";
+// import useFetchNews from "./hooks/useFetchNews.tsx";
+// import useActiveHL from "./hooks/useActiveHL.js";
 import { headlinesArray } from "./utils/headlines.js";
 
 console.clear();
 
 function App() {
-  const [headlines, setHeadlines] = useState([]);
+  const [allHeadlines, setAllHeadlines] = useState([]);
+  /**
+   * Hook that curates a list of countries that are ACTIVE
+   */
+  // const [activeHL, setActiveHL] = useActiveHL(allHeadlines);
+  const [choosableCountries, setChoosableCountries] = useState(headlinesArray);
 
   // OLD: fetching single source via HOOK
-  const { newsData, loading, error, fetchedUrl } = useFetchNews(
-    `https://newsapi.org/v2/top-headlines?country=de&apiKey=${
-      import.meta.env.VITE_apiKEY
-    }`
-  );
+  // const { newsData, loading, error, fetchedUrl } = useFetchNews(
+  //   `https://newsapi.org/v2/top-headlines?country=de&apiKey=${
+  //     import.meta.env.VITE_apiKEY
+  //   }`
+  // );
+
+  console.log(allHeadlines);
+  console.log(choosableCountries);
+
+  // console.log(activeHL);
 
   /**
    * Initial Promise.all() to fetch headline-news:
@@ -21,7 +32,7 @@ function App() {
    */
   useEffect(() => {
     // async call => waiting for promises
-    const initialHeadlines = async () => {
+    const activeHeadlines = async () => {
       const res = await headlinesArray.map((country) =>
         fetch(country.url + import.meta.env.VITE_apiKEY)
           .then((res) => res.json())
@@ -30,28 +41,34 @@ function App() {
       );
 
       const promisedNews = await Promise.all(res);
-      setHeadlines(promisedNews);
-      console.log(promisedNews);
+      setAllHeadlines(promisedNews);
     };
 
-    initialHeadlines();
+    activeHeadlines();
   }, [headlinesArray]);
 
   return (
     <div className="container">
-      <header>My News Compilation</header>
+      {/* #################### HEADER #################### */}
+      <header className="header row">
+        <h1 className="header__title">Some title</h1>
+        <p className="addCountry">Add country</p>
+        <ul></ul>
+      </header>
+      {/* #################### MAIN AREA #################### */}
       <main>
-        <div className="newsPicker row gap">
-          <div className="currentNews__container">
-            <p className="currentNews__title">Current news</p>
-            <p className="currentNews__countries">Ger</p>
-            <button className="currentNews__remove">x</button>
-          </div>
-          <div className="addNews__container"></div>
-        </div>
+        {/* {choosableCountries && (
+          <ul className="countryList col" role="list">
+            {choosableCountries.map((country, j) => (
+              <li key={j}>
+                <button className="country__button">{country.country}</button>
+              </li>
+            ))}
+          </ul>
+        )} */}
         <section className="col gap">
-          {headlines &&
-            headlines.map((country, i) => (
+          {allHeadlines &&
+            allHeadlines.map((country, i) => (
               <ul key={i} role="list" className="row gap">
                 {country.map((news, k) => (
                   <li key={k} className="card">
