@@ -1,11 +1,20 @@
 // import { useEffect, useState } from "react";
 
-// export default function useActiveHL(listOfAllHL) {
-//   const [activeHL, setActiveHL] = useState([]);
+// type UseActiveHLProps = {
+//   country: string;
+//   handle: string;
+//   url: string;
+//   active: boolean;
+// };
+
+// export default function useActiveHL(listOfAllHL: UseActiveHLProps[]) {
+//   const [activeHL, setActiveHL] = useState<UseActiveHLProps[]>([]);
 
 //   useEffect(() => {
-//     console.log(activeHL);
-//   }, []);
+//     setActiveHL(listOfAllHL.filter((headline) => headline.active === true));
 
-//   return { activeHL };
+//     console.log(listOfAllHL);
+//   }, [listOfAllHL]);
+
+//   return [activeHL];
 // }
