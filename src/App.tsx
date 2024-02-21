@@ -2,17 +2,15 @@ import { useState } from "react";
 import "./App.css";
 import { headlinesArray } from "./utils/headlines.js";
 import useFetchAllHL from "./hooks/useFetchAllHL.js";
+import useActiveHL from "./hooks/useActiveHL.js";
 // import useActiveHL from "./hooks/useActiveHL.js";
 
 console.clear();
 
 function App() {
   const [allHeadlines, setAllHeadlines] = useFetchAllHL(headlinesArray);
-  /**
-   * Hook that curates a list of countries that are ACTIVE
-   */
+  // Hook that curates a list of countries that are ACTIVE
   // const [activeHL, setActiveHL] = useActiveHL(allHeadlines);
-  const [choosableCountries, setChoosableCountries] = useState(headlinesArray);
 
   // OLD: fetching single source via HOOK
   // const { newsData, loading, error, fetchedUrl } = useFetchNews(
@@ -21,8 +19,7 @@ function App() {
   //   }`
   // );
 
-  console.log(allHeadlines);
-  console.log(choosableCountries);
+  // console.log(choosableCountries);
 
   return (
     <div className="container">
