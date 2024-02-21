@@ -39,7 +39,7 @@ function App() {
             ))}
           </ul>
         )} */}
-        <section className="col gap">
+        {/* <section className="col gap">
           {allHeadlines &&
             allHeadlines.map((country, i) => (
               <ul key={i} role="list" className="row gap">
@@ -54,7 +54,7 @@ function App() {
                 ))}
               </ul>
             ))}
-        </section>
+        </section> */}
       </main>
     </div>
   );
