@@ -7,7 +7,7 @@ import { headlinesArray } from "./utils/headlines.js";
 console.clear();
 
 function App() {
-  const [allHeadlines, setAllHeadlines] = useState([]);
+  const [allHeadlines, setAllHeadlines] = useState<string[]>("");
   /**
    * Hook that curates a list of countries that are ACTIVE
    */
