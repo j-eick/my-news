@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
-// import useFetchNews from "./hooks/useFetchNews.tsx";
-// import useActiveHL from "./hooks/useActiveHL.js";
 import { headlinesArray } from "./utils/headlines.js";
+import useFetchAllHL from "./hooks/useFetchAllHL.js";
+// import useActiveHL from "./hooks/useActiveHL.js";
 
 console.clear();
 
 function App() {
-  const [allHeadlines, setAllHeadlines] = useState<string[]>("");
+  const [allHeadlines, setAllHeadlines] = useFetchAllHL(headlinesArray);
   /**
    * Hook that curates a list of countries that are ACTIVE
    */
@@ -23,29 +23,6 @@ function App() {
 
   console.log(allHeadlines);
   console.log(choosableCountries);
-
-  // console.log(activeHL);
-
-  /**
-   * Initial Promise.all() to fetch headline-news:
-   *  - de, us, cn
-   */
-  useEffect(() => {
-    // async call => waiting for promises
-    const activeHeadlines = async () => {
-      const res = await headlinesArray.map((country) =>
-        fetch(country.url + import.meta.env.VITE_apiKEY)
-          .then((res) => res.json())
-          .then((data) => data.articles)
-          .catch((err) => "Mishap happened: " + err)
-      );
-
-      const promisedNews = await Promise.all(res);
-      setAllHeadlines(promisedNews);
-    };
-
-    activeHeadlines();
-  }, [headlinesArray]);
 
   return (
     <div className="container">
