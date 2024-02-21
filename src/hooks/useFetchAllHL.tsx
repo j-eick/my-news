@@ -8,7 +8,7 @@ type UseFetchAllHLProps = {
 };
 
 export default function useFetchAllHL(headlinesArray: UseFetchAllHLProps[]) {
-  const [allHeadlines, setAllHeadlines] = useState<any[]>([]);
+  const [allHeadlines, setAllHeadlines] = useState<UseFetchAllHLProps[]>([]);
 
   useEffect(() => {
     const activeHeadlines = async () => {
@@ -18,10 +18,11 @@ export default function useFetchAllHL(headlinesArray: UseFetchAllHLProps[]) {
             .then((res) => res.json())
             .then((data) => data.articles)
             .catch((err) => {
-              throw new Error("Mishap happened: " + err);
+              console.error("Mishap happened: " + err);
             })
         );
         const promisedNews = await Promise.all(res);
+        // fill state-variable
         setAllHeadlines(promisedNews);
       } catch (err) {
         console.error(err);
