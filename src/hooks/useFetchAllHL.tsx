@@ -16,14 +16,29 @@ export default function useFetchAllHL(headlinesArray: UseFetchAllHLProps[]) {
         const res = await headlinesArray.map((country) =>
           fetch(country.url + import.meta.env.VITE_apiKEY)
             .then((res) => res.json())
-            .then((data) => data.articles)
+            .then((data) =>
+              data.articles.map((item) =>
+                // console.log(item),
+                ({
+                  author: item.author,
+                  title: item.title,
+                  content: item.content,
+                  description: item.description,
+                  published: item.publishedAt,
+                  source: item.source.name,
+                  url: item.url,
+                })
+              )
+            )
             .catch((err) => {
-              console.error("Mishap happened: " + err);
+              console.error("Oh nooo ~ we've got an error: " + err);
             })
         );
+
         const promisedNews = await Promise.all(res);
-        // fill state-variable
         setAllHeadlines(promisedNews);
+
+        // console.log(allHeadlines);
       } catch (err) {
         console.error(err);
       }
