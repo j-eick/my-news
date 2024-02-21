@@ -1,8 +1,7 @@
-import { useState } from "react";
 import "./App.css";
 import { headlinesArray } from "./utils/headlines.js";
 import useFetchAllHL from "./hooks/useFetchAllHL.js";
-import useActiveHL from "./hooks/useActiveHL.js";
+// import useActiveHL from "./hooks/useActiveHL.js";
 // import useActiveHL from "./hooks/useActiveHL.js";
 
 console.clear();
@@ -19,7 +18,7 @@ function App() {
   //   }`
   // );
 
-  // console.log(choosableCountries);
+  console.log(allHeadlines);
 
   return (
     <div className="container">
