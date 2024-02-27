@@ -1,51 +1,82 @@
 import { useEffect, useState } from "react";
 
-type UseFetchAllHLProps = {
-  country: string;
-  handle: string;
-  url: string;
-  active: boolean;
-};
-
-export default function useFetchAllHL(headlinesArray: UseFetchAllHLProps[]) {
-  const [allHeadlines, setAllHeadlines] = useState<UseFetchAllHLProps[]>([]);
+export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
+  const [curatedHeadlines, setCuratedHeadlines] = useState<
+  HeadLinesArrayProps[][]
+  >([]);
 
   useEffect(() => {
-    const activeHeadlines = async () => {
-      try {
-        const res = await headlinesArray.map((country) =>
-          fetch(country.url + import.meta.env.VITE_apiKEY)
-            .then((res) => res.json())
-            .then((data) =>
-              data.articles.map((item) =>
-                // console.log(item),
-                ({
-                  author: item.author,
-                  title: item.title,
-                  content: item.content,
-                  description: item.description,
-                  published: item.publishedAt,
-                  source: item.source.name,
-                  url: item.url,
-                })
-              )
-            )
-            .catch((err) => {
-              console.error("Oh nooo ~ we've got an error: " + err);
-            })
-        );
+    /**
+     *  1. filtering for "active" headlines
+     *  2. concatinaing url + apiKey
+     */
+    const activeHeadlines: string[] = headlinesArray
+      .filter((item: HeadLinesArrayProps) => item.active == true)
+      .map(
+        (item: HeadLinesArrayProps) => item.url + import.meta.env.VITE_apiKEY
+      );
 
-        const promisedNews = await Promise.all(res);
-        setAllHeadlines(promisedNews);
+    localStorage.setItem("activeHLs", JSON.stringify(activeHeadlines));
 
-        // console.log(allHeadlines);
-      } catch (err) {
-        console.error(err);
+    /**
+     * Fetching data
+     *  1. loop over all active headlines
+     *    1.1.  fetching data
+     *    1.2.  loop over articles and create new article objects
+     *          by adding fetched data to original headlinesArray.
+     */
+    async function fetchData() {
+      const allArticlesByCountries: HeadLinesArrayProps[][] = [];
+      for (const [i, headline] of activeHeadlines.entries()) {
+        try {
+          const res = await fetch(headline);
+          const data = await res.json();
+          const articles = await data.articles;
+
+          /**
+           * curate new headline objects
+           */
+          const curatedArticlesArray: HeadLinesArrayProps[] = [];
+          for (const article of articles) {
+            const curatedHL: HeadLinesArrayProps = {
+              //add keyValues from original headline
+              country: headlinesArray[i].country,
+              handle: headlinesArray[i].handle,
+              active: headlinesArray[i].active,
+              //spread article content
+              ...article,
+            };
+            curatedArticlesArray.push(curatedHL);
+          }
+          allArticlesByCountries.push(curatedArticlesArray);
+
+          // console.log(allArticlesByCountries);
+          
+        } catch (err) {
+          console.error("Mööp: " + err);
+        }
       }
-    };
+      setCuratedHeadlines(allArticlesByCountries);
+    }
 
-    activeHeadlines();
+    fetchData();
   }, [headlinesArray]);
 
-  return [allHeadlines];
+  return [curatedHeadlines];
 }
+
+type HeadLinesArrayProps = {
+  country: string;
+  handle: string;
+  active: boolean;
+  title: string;
+  author: string;
+  content: null | string;
+  description: null | string;
+  publishedAt: string;
+  url: string;
+  urlToImage: null| string;
+  source: {
+    name: string;
+  };
+};
