@@ -1,24 +1,11 @@
 import "./App.css";
 import { headlinesArray } from "./utils/headlines.js";
 import useFetchAllHL from "./hooks/useFetchAllHL.js";
-// import useActiveHL from "./hooks/useActiveHL.js";
-// import useActiveHL from "./hooks/useActiveHL.js";
 
 console.clear();
 
 function App() {
-  const [allHeadlines, setAllHeadlines] = useFetchAllHL(headlinesArray);
-  // Hook that curates a list of countries that are ACTIVE
-  // const [activeHL, setActiveHL] = useActiveHL(allHeadlines);
-
-  // OLD: fetching single source via HOOK
-  // const { newsData, loading, error, fetchedUrl } = useFetchNews(
-  //   `https://newsapi.org/v2/top-headlines?country=de&apiKey=${
-  //     import.meta.env.VITE_apiKEY
-  //   }`
-  // );
-
-  console.log(allHeadlines);
+  const [activeHeadlines, setActiveHeadlines] = useFetchAllHL(headlinesArray);
 
   return (
     <div className="container">
@@ -30,31 +17,33 @@ function App() {
       </header>
       {/* #################### MAIN AREA #################### */}
       <main>
-        {/* {choosableCountries && (
-          <ul className="countryList col" role="list">
-            {choosableCountries.map((country, j) => (
-              <li key={j}>
-                <button className="country__button">{country.country}</button>
-              </li>
-            ))}
-          </ul>
-        )} */}
-        {/* <section className="col gap">
-          {allHeadlines &&
-            allHeadlines.map((country, i) => (
+        {/* {
+          activeHeadlines && (
+            activeHeadlines.map((item, j) => (
+              <ul className="countryList col" role="list">
+                <li key={j}>
+                  <button className="country__button">{item.germany}</button>
+                </li>
+              </ul>
+            ))
+          )
+        } */}
+        <section className="col gap">
+          {activeHeadlines &&
+            activeHeadlines.map((country, i) => (
               <ul key={i} role="list" className="row gap">
-                {country.map((news, k) => (
+                {country.map((article, k) => (
                   <li key={k} className="card">
-                    <article>
-                      <p>{news.author}</p>
-                      <h1 className="card__title">{news.title}</h1>
-                      <p>Quelle: {news.source.name}</p>
-                    </article>
-                  </li>
+                  <article>
+                    <p>{article.author}</p>
+                    <h1 className="card__title">{article.title}</h1>
+                    <p>Quelle: {article.source.name}</p>
+                  </article>
+                </li>
                 ))}
               </ul>
             ))}
-        </section> */}
+        </section>
       </main>
     </div>
   );
