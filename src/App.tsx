@@ -14,7 +14,21 @@ function App() {
       <header className="header row">
         <h1 className="header__title">Some title</h1>
         <p className="addCountry">Add country</p>
-        <ul></ul>
+        {
+          activeHeadlines && (
+            <div className="allHandles__container">
+              <ul className="allHandles__list" role="list">
+                {
+                  headlinesArray.map((hl, i) => (
+                    <li key={i} className="allHandles__card">
+                      <button className="allHandles__button">{hl.handle}</button>
+                    </li>
+                    ))
+                  }
+              </ul>
+        </div>
+          )
+        }
       </header>
       {/* ############  2. MAIN  ##################################### */}
       {/* ############################################################ */}
