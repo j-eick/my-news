@@ -10,10 +10,13 @@
 
 .header {
   margin-top: 2rem;
-  padding: 1rem 0;
-  border: 1px solid black;
-
+  height: 10rem;
+  
   display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  border: 1px solid black;
 
   h1 {
     font-size: var(--step-1);
@@ -25,14 +28,52 @@
     display: flex;
     border: 1px solid red;
   }
+  .allHandles__container{
+    height: 90%;
+  }
+  
+  .addCountry {
+    padding: 1em;
+    width: 10%;
+    border: 1px solid green;
+    text-align: center;
+  }
+
+  .allHandles__list {
+    height: 100%;
+    width: 200px;
+
+    display: grid;
+    place-items: center;
+    grid-template-columns: 1fr 1fr;
+    border: 3px solid red;
+  }
+
+  .allHandles__card {
+    width: 60px;
+    height: 30px;
+    /* padding: .25em .5em; */
+
+    display: flex;
+    place-content: center;
+
+    background-color: lightgreen;
+    border-radius: .5em;
+    
+    .allHandles__button {
+      height: 100%;
+      width: 100%;
+      
+      font-size: var(--step--1);
+      background-color: inherit;
+      border: none;
+      border-radius: .3em;
+
+      cursor: pointer;
+    }
+  }
 }
 
-.addCountry {
-  padding: 1em;
-  width: 10%;
-  border: 1px solid green;
-  text-align: center;
-}
 
 .addCountry:hover {
   background-color: lightgray;
