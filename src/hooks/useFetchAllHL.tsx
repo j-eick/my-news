@@ -1,31 +1,62 @@
 import { useEffect, useState } from "react";
 
-export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
-  const [curatedHeadlines, setCuratedHeadlines] = useState<
-  CuratedHeadlineProps[][]
-  >([]);
+console.clear();
+
+export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
+  const [origHLArray] = useState<OriginalHLArrayProps[]>(headlinesArray)
+  const [curatedHLs, setCuratedHLs] = useState<CuratedHeadlineProps[][]>([]);
+
 
   useEffect(() => {
-    /**
-     *  1. filtering for "active" headlines
-     *  2. concatinaing url + apiKey
-     */
-    const activeHeadlines: string[] = headlinesArray
-      .filter((item: HeadLinesArrayProps) => item.active == true)
+    
+    // 1. filtering for headlines with "active: true" property
+    // 2. concatinating url + apiKey
+    const activeHeadlines: string[] = origHLArray
+      .filter(
+        (item: OriginalHLArrayProps) => item.active == true)
       .map(
-        (item: HeadLinesArrayProps) => item.url + import.meta.env.VITE_apiKEY
+        (item: OriginalHLArrayProps) => item.url + import.meta.env.VITE_apiKEY
       );
+  
+    const dataFromStorage = localStorage.getItem("localData");
+    dataFromStorage == null ? (
+      console.log("Status: Localstorage => " + "empty")
+      ) : (
+        console.log("Status: Localstorage => " + "full")
+      )
 
-    localStorage.setItem("activeHLs", JSON.stringify(activeHeadlines));
+    //LOCALSTORAGE HAS NO DATA
+    if (dataFromStorage?.length == 0 || dataFromStorage == null) {
+      console.log("storage = empty");
+      
+      // fetch from api 
+      fetchData(activeHeadlines);         
+
+      //LOCALSTORAGE HAS DATA
+    } else {
+      console.log("fetching from localStorage...");
+
+      // fetch from local storage
+      try{
+        const dataFromLS = localStorage.getItem("localData");
+        if (dataFromLS !== null) {
+          const data = JSON.parse(dataFromLS);
+          console.log(data);
+          setCuratedHLs(data);
+        } 
+      } catch(err) {
+        console.error("Fetching from localstorage went wrong: " + err);
+      }
+    }
 
     /**
-     * Fetching data
+     * FETCH DATA
      *  1. loop over all active headlines
      *    1.1.  fetching data
      *    1.2.  loop over articles and create new article objects
      *          by adding fetched data to original headlinesArray.
      */
-    async function fetchData() {
+    async function fetchData(activeHeadlines: string[]) {
       const allArticlesByCountries: CuratedHeadlineProps[][] = [];
       for (const [i, headline] of activeHeadlines.entries()) {
         try {
@@ -42,7 +73,7 @@ export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
               //add keyValues from original headline
               country: headlinesArray[i].country,
               handle: headlinesArray[i].handle,
-              active: headlinesArray[i].active,
+              // active: headlinesArray[i].active,
               //spread article content
               ...article,
             };
@@ -51,20 +82,29 @@ export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
           allArticlesByCountries.push(curatedArticlesArray);
 
           // console.log(allArticlesByCountries);
-          
         } catch (err) {
           console.error("Mööp: " + err);
         }
       }
-      setCuratedHeadlines(allArticlesByCountries);
-      console.log(curatedHeadlines);
-      
+      // setCuratedHLs(allArticlesByCountries);
+      localStorage.setItem("localData", JSON.stringify(allArticlesByCountries));
+
+      fetchFromLS();
+
+      async function fetchFromLS() {
+        const dataFromLS = localStorage.getItem("localData");
+          if (dataFromLS !== null) {
+            console.log("fetching from localStorage...");
+            const data = JSON.parse(dataFromLS);
+            console.log(data);
+            setCuratedHLs(data);
+          } 
+      }
+
     }
+  }, [origHLArray]);
 
-    fetchData();
-  }, [headlinesArray]);
-
-  return [curatedHeadlines];
+  return [curatedHLs];
 }
 
 type CuratedHeadlineProps = {
@@ -77,15 +117,15 @@ type CuratedHeadlineProps = {
   description: null | string;
   publishedAt: string;
   url: string;
-  urlToImage: null| string;
+  urlToImage: null | string;
   source: {
     name: string;
   };
 };
 
-type HeadLinesArrayProps = {
+type OriginalHLArrayProps = {
   country: string;
   handle: string;
   url: string;
   active: boolean;
-}
+};
