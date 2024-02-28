@@ -38,61 +38,31 @@
   background-color: lightgray;
 }
 
-.container__addCountry {
+.container__displayedCountries {
   margin-bottom: 2rem;
-  padding: 1em;
-  height: 100%;
-  max-width: 50%;
-  /* justify-content: space-between; */
-  border: 1px solid black;
+  border: 2px solid blue;
 
-  .countryList {
-    /* width: 50%; */
-    height: 100%;
-    border: 1px solid blue;
+  .displayedCountries__list {
+    padding: 1em;
+    border: 2px solid red;
   }
+}
+
+.displayedCountries__cards {
+  padding: 1em;
+  min-width: 120px;
+
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  border-radius: 0.5em;
 
   .country__button {
-    background-color: aqua;
+    width: 100%;
+    background: inherit;
     border: none;
+    /* border: 1px solid black; */
   }
 }
 
-.currentNews__container {
-  position: relative;
-  margin-bottom: 2rem;
-  border: 1px solid black;
-}
-
-.currentNews__title,
-.currentNews__countries {
-  text-align: center;
-}
-
-.currentNews__countries {
-  width: 50%;
-
-  display: flex;
-  place-content: center;
-  padding: 0.25em;
-  border: 1px solid black;
-}
-
-.currentNews__remove {
-  position: absolute;
-  width: 1.25rem;
-  height: 1.25rem;
-  top: -0.5rem;
-  right: -0.5rem;
-
-  color: #fff;
-  background-color: black;
-  border-radius: 50%;
-  border: none;
-  outline: none;
-
-  cursor: pointer;
-}
 /* 
 .addNews__container {
   display: grid;
