@@ -6,18 +6,9 @@ export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
   const [origHLArray] = useState<OriginalHLArrayProps[]>(headlinesArray)
   const [curatedHLs, setCuratedHLs] = useState<CuratedHeadlineProps[][]>([]);
 
-
   useEffect(() => {
     
-    // 1. filtering for headlines with "active: true" property
-    // 2. concatinating url + apiKey
-    const activeHeadlines: string[] = origHLArray
-      .filter(
-        (item: OriginalHLArrayProps) => item.active == true)
-      .map(
-        (item: OriginalHLArrayProps) => item.url + import.meta.env.VITE_apiKEY
-      );
-  
+    //---check localStorage
     const dataFromStorage = localStorage.getItem("localData");
     dataFromStorage == null ? (
       console.log("Status: Localstorage => " + "empty")
@@ -25,18 +16,27 @@ export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
         console.log("Status: Localstorage => " + "full")
       )
 
-    //LOCALSTORAGE HAS NO DATA
+    //---1. filtering for headlines with "active: true" property
+    //---2. concatinating url + apiKey
+    const activeHeadlines: string[] = origHLArray
+      .filter(
+        (item: OriginalHLArrayProps) => item.active == true)
+      .map(
+        (item: OriginalHLArrayProps) => item.url + import.meta.env.VITE_apiKEY
+      );
+  
+    //IF LOCALSTORAGE HAS NO DATA
     if (dataFromStorage?.length == 0 || dataFromStorage == null) {
       console.log("storage = empty");
       
-      // fetch from api 
+      //---fetch from api 
       fetchData(activeHeadlines);         
 
-      //LOCALSTORAGE HAS DATA
+      //IF LOCALSTORAGE HAS DATA
     } else {
       console.log("fetching from localStorage...");
 
-      // fetch from local storage
+      //---fetch from local storage
       try{
         const dataFromLS = localStorage.getItem("localData");
         if (dataFromLS !== null) {
