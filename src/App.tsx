@@ -5,41 +5,49 @@ import useFetchAllHL from "./hooks/useFetchAllHL.js";
 console.clear();
 
 function App() {
-  const [activeHeadlines, setActiveHeadlines] = useFetchAllHL(headlinesArray);
+  const [activeHeadlines] = useFetchAllHL(headlinesArray);
 
   return (
     <div className="container">
-      {/* #################### HEADER #################### */}
+      {/* ############  1. HEADER  ################################### */}
+      {/* ############################################################ */}
       <header className="header row">
         <h1 className="header__title">Some title</h1>
         <p className="addCountry">Add country</p>
         <ul></ul>
       </header>
-      {/* #################### MAIN AREA #################### */}
+      {/* ############  2. MAIN  ##################################### */}
+      {/* ############################################################ */}
       <main>
-        {/* {
-          activeHeadlines && (
-            activeHeadlines.map((item, j) => (
-              <ul className="countryList col" role="list">
-                <li key={j}>
-                  <button className="country__button">{item.germany}</button>
+        {/* ##########################  2.1 PICKED COUNTRIES  ######## */}
+        {/* ########################################################## */}
+        {activeHeadlines && (
+          <div className="container__displayedCountries">
+            <ul className="displayedCountries__list row gap" role="list">
+              {activeHeadlines.map((country, j) => (
+                <li key={j} className="displayedCountries__cards">
+                  <button className="country__button">
+                    {country[0].country}
+                  </button>
                 </li>
-              </ul>
-            ))
-          )
-        } */}
+              ))}
+            </ul>
+          </div>
+        )}
+        {/* ##########################  2.2 HEADLINES  ############### */}
+        {/* ########################################################## */}
         <section className="col gap">
           {activeHeadlines &&
             activeHeadlines.map((country, i) => (
               <ul key={i} role="list" className="row gap">
                 {country.map((article, k) => (
                   <li key={k} className="card">
-                  <article>
-                    <p>{article.author}</p>
-                    <h1 className="card__title">{article.title}</h1>
-                    <p>Quelle: {article.source.name}</p>
-                  </article>
-                </li>
+                    <article>
+                      <p>{article.author}</p>
+                      <h1 className="card__title">{article.title}</h1>
+                      <p>Quelle: {article.source.name}</p>
+                    </article>
+                  </li>
                 ))}
               </ul>
             ))}
