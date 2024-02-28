@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
   const [curatedHeadlines, setCuratedHeadlines] = useState<
-  HeadLinesArrayProps[][]
+  CuratedHeadlineProps[][]
   >([]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
      *          by adding fetched data to original headlinesArray.
      */
     async function fetchData() {
-      const allArticlesByCountries: HeadLinesArrayProps[][] = [];
+      const allArticlesByCountries: CuratedHeadlineProps[][] = [];
       for (const [i, headline] of activeHeadlines.entries()) {
         try {
           const res = await fetch(headline);
@@ -36,9 +36,9 @@ export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
           /**
            * curate new headline objects
            */
-          const curatedArticlesArray: HeadLinesArrayProps[] = [];
+          const curatedArticlesArray: CuratedHeadlineProps[] = [];
           for (const article of articles) {
-            const curatedHL: HeadLinesArrayProps = {
+            const curatedHL: CuratedHeadlineProps = {
               //add keyValues from original headline
               country: headlinesArray[i].country,
               handle: headlinesArray[i].handle,
@@ -57,6 +57,8 @@ export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
         }
       }
       setCuratedHeadlines(allArticlesByCountries);
+      console.log(curatedHeadlines);
+      
     }
 
     fetchData();
@@ -65,7 +67,7 @@ export default function useFetchAllHL(headlinesArray: HeadLinesArrayProps[]) {
   return [curatedHeadlines];
 }
 
-type HeadLinesArrayProps = {
+type CuratedHeadlineProps = {
   country: string;
   handle: string;
   active: boolean;
@@ -80,3 +82,10 @@ type HeadLinesArrayProps = {
     name: string;
   };
 };
+
+type HeadLinesArrayProps = {
+  country: string;
+  handle: string;
+  url: string;
+  active: boolean;
+}
