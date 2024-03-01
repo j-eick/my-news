@@ -10,24 +10,18 @@ export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
     
     //---check localStorage
     const dataFromStorage = localStorage.getItem("localData");
-    dataFromStorage == null ? (
-      console.log("Status: Localstorage => " + "empty")
-      ) : (
-        console.log("Status: Localstorage => " + "full")
-      )
+
+    localStorage.setItem("allHLs", JSON.stringify(origHLArray));
 
     //---1. filtering for headlines with "active: true" property
     //---2. concatinating url + apiKey
     const activeHeadlines: string[] = origHLArray
-      .filter(
-        (item: OriginalHLArrayProps) => item.active == true)
-      .map(
-        (item: OriginalHLArrayProps) => item.url + import.meta.env.VITE_apiKEY
-      );
+      .filter((item: OriginalHLArrayProps) => item.active == true)
+      .map((item: OriginalHLArrayProps) => item.url + import.meta.env.VITE_apiKEY);
   
     //IF LOCALSTORAGE HAS NO DATA
-    if (dataFromStorage?.length == 0 || dataFromStorage == null) {
-      console.log("storage = empty");
+    if (dataFromStorage == null) {
+      console.log("Status: Localstorage => " + "empty");
       
       //---fetch from api 
       fetchData(activeHeadlines);         
@@ -42,6 +36,7 @@ export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
         if (dataFromLS !== null) {
           const data = JSON.parse(dataFromLS);
           console.log(data);
+        
           setCuratedHLs(data);
         } 
       } catch(err) {
