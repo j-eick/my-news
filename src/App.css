@@ -43,34 +43,41 @@
     height: 100%;
     width: 200px;
 
-    display: grid;
-    place-items: center;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    place-content: center;
+    flex-wrap: wrap;
+    gap: .1em .15em;
+
     border: 3px solid red;
   }
 
   .allHandles__card {
     width: 60px;
-    height: 30px;
-    /* padding: .25em .5em; */
+    height: 50px;
 
     display: flex;
     place-content: center;
+    flex-grow: 1;
 
+    font-size: var(--step--1);
     background-color: lightgreen;
-    border-radius: .5em;
+    /* border-radius: .5em; */
     
     .allHandles__button {
       height: 100%;
       width: 100%;
       
-      font-size: var(--step--1);
       background-color: inherit;
+      font-size: inherit;
       border: none;
       border-radius: .3em;
 
       cursor: pointer;
     }
+  }
+
+  .active {
+    background-color: rgb(99, 182, 99);
   }
 }
 
@@ -104,32 +111,11 @@
   }
 }
 
-/* 
-.addNews__container {
-  display: grid;
-  place-items: center;
-}
-
-.dropdown {
-  padding: 0.5em;
-
-  text-align: center;
-  border: 1px solid black;
-  border-radius: 1rem;
-}
-
-.dropdown.option {
-  color: #fff;
-}
-
-.dropdown {
-} */
-
-.card {
+.activeHeadlines__card {
+  padding: 1em;
   height: 20rem;
   min-width: 18rem;
-  padding: 1em;
-  flex-grow: 1;
+
   border: 1px solid black;
   border-radius: 1rem;
 }
