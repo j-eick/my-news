@@ -5,7 +5,22 @@ import useFetchAllHL from "./hooks/useFetchAllHL.js";
 console.clear();
 
 function App() {
-  const [activeHeadlines] = useFetchAllHL(headlinesArray);
+  const [activeHeadlines, setActiveHeadlines] = useFetchAllHL(headlinesArray);
+
+  const handleActivateHL = (e: BtnClickEvent) => {
+    const clickedHandle = (e.target as HTMLButtonElement).textContent;
+    
+    // headlinesArray.forEach(hl => {
+    //   if (hl.handle === clickedHandle) {
+    //     console.log(hl);
+    //     headlinesArray = {
+
+    //     }
+        
+    //   }
+    // })
+    
+  }
 
   return (
     <div className="container">
@@ -20,9 +35,18 @@ function App() {
               <ul className="allHandles__list" role="list">
                 {
                   headlinesArray.map((hl, i) => (
-                    <li key={i} className="allHandles__card">
+                    hl.active === true ? (
+                      <li key={i} className="allHandles__card active">
                       <button className="allHandles__button">{hl.handle}</button>
                     </li>
+                    ) : (
+                      <li key={i} className="allHandles__card">
+                      <button 
+                        className="allHandles__button" 
+                        onClick={(e: BtnClickEvent) => handleActivateHL(e)}>{hl.handle}
+                      </button>
+                    </li>
+                    )
                     ))
                   }
               </ul>
@@ -37,7 +61,7 @@ function App() {
         {/* ########################################################## */}
         {activeHeadlines && (
           <div className="container__displayedCountries">
-            <ul className="displayedCountries__list row gap" role="list">
+            <ul className="displayedCountries__list row gap1" role="list">
               {activeHeadlines.map((country, j) => (
                 <li key={j} className="displayedCountries__cards">
                   <button className="country__button">
@@ -50,15 +74,17 @@ function App() {
         )}
         {/* ##########################  2.2 HEADLINES  ############### */}
         {/* ########################################################## */}
-        <section className="col gap">
+        <section className="col gap1">
           {activeHeadlines &&
             activeHeadlines.map((country, i) => (
-              <ul key={i} role="list" className="row gap">
-                {country.map((article, k) => (
-                  <li key={k} className="card">
+              <ul key={i} role="list" className="activeHeadlines__list row gap1">
+                {country.map((article, k) => (                  
+                  <li key={k} className="activeHeadlines__card">
                     <article>
                       <p>{article.author}</p>
-                      <h1 className="card__title">{article.title}</h1>
+                      <a href={article.url}>
+                        <h1 className="card__title">{article.title}</h1>
+                      </a>
                       <p>Quelle: {article.source.name}</p>
                     </article>
                   </li>
@@ -72,3 +98,5 @@ function App() {
 }
 
 export default App;
+
+type BtnClickEvent = React.MouseEvent<HTMLButtonElement>;
