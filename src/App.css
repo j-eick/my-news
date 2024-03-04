@@ -8,30 +8,22 @@
   border: 1px solid red;
 }
 
+/* ##########   HEADER   ########## */
+
 .header {
   margin-top: 2rem;
   height: 10rem;
-  
+
   display: flex;
   align-items: center;
   justify-content: space-around;
 
   border: 1px solid black;
 
-  h1 {
-    font-size: var(--step-1);
-    display: flex;
-    align-items: center;
-  }
-
-  p {
-    display: flex;
-    border: 1px solid red;
-  }
-  .allHandles__container{
+  .allHandles__container {
     height: 90%;
   }
-  
+
   .addCountry {
     padding: 1em;
     width: 10%;
@@ -46,7 +38,7 @@
     display: flex;
     place-content: center;
     flex-wrap: wrap;
-    gap: .1em .15em;
+    gap: 0.1em 0.15em;
 
     border: 3px solid red;
   }
@@ -62,15 +54,15 @@
     font-size: var(--step--1);
     background-color: lightgreen;
     /* border-radius: .5em; */
-    
+
     .allHandles__button {
       height: 100%;
       width: 100%;
-      
+
       background-color: inherit;
       font-size: inherit;
       border: none;
-      border-radius: .3em;
+      border-radius: 0.3em;
 
       cursor: pointer;
     }
@@ -80,7 +72,6 @@
     background-color: rgb(99, 182, 99);
   }
 }
-
 
 .addCountry:hover {
   background-color: lightgray;
