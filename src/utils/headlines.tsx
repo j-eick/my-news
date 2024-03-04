@@ -1,11 +1,11 @@
-type HeadlinesArrayProps = {
+type HLArrayProps = {
   country: string;
   handle: string;
   url: string;
   active: boolean;
 };
 
-export const headlinesArray: HeadlinesArrayProps[] = [
+export const headlinesArray: HLArrayProps[] = [
   {
     country: "Germany",
     handle: "de",
