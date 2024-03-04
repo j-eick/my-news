@@ -3,11 +3,10 @@ import { useEffect, useState } from "react";
 console.clear();
 
 export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
-  const [origHLArray] = useState<OriginalHLArrayProps[]>(headlinesArray)
+  const [origHLArray] = useState<OriginalHLArrayProps[]>(headlinesArray);
   const [curatedHLs, setCuratedHLs] = useState<CuratedHeadlineProps[][]>([]);
 
   useEffect(() => {
-    
     //---check localStorage
     const dataFromStorage = localStorage.getItem("localData");
 
@@ -17,29 +16,31 @@ export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
     //---2. concatinating url + apiKey
     const activeHeadlines: string[] = origHLArray
       .filter((item: OriginalHLArrayProps) => item.active == true)
-      .map((item: OriginalHLArrayProps) => item.url + import.meta.env.VITE_apiKEY);
-  
+      .map(
+        (item: OriginalHLArrayProps) => item.url + import.meta.env.VITE_apiKEY
+      );
+
     //IF LOCALSTORAGE HAS NO DATA
     if (dataFromStorage == null) {
       console.log("Status: Localstorage => " + "empty");
-      
-      //---fetch from api 
-      fetchData(activeHeadlines);         
+
+      //---fetch from api
+      fetchData(activeHeadlines);
 
       //IF LOCALSTORAGE HAS DATA
     } else {
       console.log("fetching from localStorage...");
 
       //---fetch from local storage
-      try{
+      try {
         const dataFromLS = localStorage.getItem("localData");
         if (dataFromLS !== null) {
           const data = JSON.parse(dataFromLS);
           console.log(data);
-        
+
           setCuratedHLs(data);
-        } 
-      } catch(err) {
+        }
+      } catch (err) {
         console.error("Fetching from localstorage went wrong: " + err);
       }
     }
@@ -68,7 +69,7 @@ export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
               //add keyValues from original headline
               country: headlinesArray[i].country,
               handle: headlinesArray[i].handle,
-              // active: headlinesArray[i].active,
+              //active: headlinesArray[i].active,
               //spread article content
               ...article,
             };
@@ -88,14 +89,13 @@ export default function useFetchAllHL(headlinesArray: OriginalHLArrayProps[]) {
 
       async function fetchFromLS() {
         const dataFromLS = localStorage.getItem("localData");
-          if (dataFromLS !== null) {
-            console.log("fetching from localStorage...");
-            const data = JSON.parse(dataFromLS);
-            console.log(data);
-            setCuratedHLs(data);
-          } 
+        if (dataFromLS !== null) {
+          console.log("fetching from localStorage...");
+          const data = JSON.parse(dataFromLS);
+          console.log(data);
+          setCuratedHLs(data);
+        }
       }
-
     }
   }, [origHLArray]);
 
