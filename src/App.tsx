@@ -1,58 +1,62 @@
 import "./App.css";
 import { headlinesArray } from "./utils/headlines.js";
 import useFetchAllHL from "./hooks/useFetchAllHL.js";
+import { useEffect, useState } from "react";
 
 console.clear();
 
 function App() {
-  const [activeHeadlines, setActiveHeadlines] = useFetchAllHL(headlinesArray);
+  const [allHeadlines, setAllHeadlines] = useState(headlinesArray);
+  const [activeHeadlines, setActiveHeadlines] = useFetchAllHL(allHeadlines);
 
   const handleActivateHL = (e: BtnClickEvent) => {
     const clickedHandle = (e.target as HTMLButtonElement).textContent;
-    
-    // headlinesArray.forEach(hl => {
-    //   if (hl.handle === clickedHandle) {
-    //     console.log(hl);
-    //     headlinesArray = {
+    console.log(clickedHandle);
+    // console.log(...allHeadlines);
 
-    //     }
-        
-    //   }
-    // })
-    
-  }
+    const updatedArray = allHeadlines.map((hl) => {
+      if (hl.handle === clickedHandle) {
+        return { ...hl, active: !hl.active };
+      } else {
+        return hl;
+      }
+    });
+    setAllHeadlines(updatedArray);
+  };
+
+  useEffect(() => {
+    console.log(...allHeadlines);
+  }, [allHeadlines]);
 
   return (
     <div className="container">
       {/* ############  1. HEADER  ################################### */}
       {/* ############################################################ */}
       <header className="header row">
-        <h1 className="header__title">Some title</h1>
-        <p className="addCountry">Add country</p>
-        {
-          activeHeadlines && (
-            <div className="allHandles__container">
-              <ul className="allHandles__list" role="list">
-                {
-                  headlinesArray.map((hl, i) => (
-                    hl.active === true ? (
-                      <li key={i} className="allHandles__card active">
-                      <button className="allHandles__button">{hl.handle}</button>
-                    </li>
-                    ) : (
-                      <li key={i} className="allHandles__card">
-                      <button 
-                        className="allHandles__button" 
-                        onClick={(e: BtnClickEvent) => handleActivateHL(e)}>{hl.handle}
-                      </button>
-                    </li>
-                    )
-                    ))
-                  }
-              </ul>
-        </div>
-          )
-        }
+        <h1 className="header__title">My News Compilation</h1>
+        {/* <p className="addCountry">Add country</p> */}
+        {activeHeadlines && (
+          <div className="allHandles__container">
+            <ul className="allHandles__list" role="list">
+              {headlinesArray.map((hl, i) =>
+                hl.active === true ? (
+                  <li key={i} className="allHandles__card active">
+                    <button className="allHandles__button">{hl.handle}</button>
+                  </li>
+                ) : (
+                  <li key={i} className="allHandles__card">
+                    <button
+                      className="allHandles__button"
+                      onClick={(e: BtnClickEvent) => handleActivateHL(e)}
+                    >
+                      {hl.handle}
+                    </button>
+                  </li>
+                )
+              )}
+            </ul>
+          </div>
+        )}
       </header>
       {/* ############  2. MAIN  ##################################### */}
       {/* ############################################################ */}
@@ -77,8 +81,12 @@ function App() {
         <section className="col gap1">
           {activeHeadlines &&
             activeHeadlines.map((country, i) => (
-              <ul key={i} role="list" className="activeHeadlines__list row gap1">
-                {country.map((article, k) => (                  
+              <ul
+                key={i}
+                role="list"
+                className="activeHeadlines__list row gap1"
+              >
+                {country.map((article, k) => (
                   <li key={k} className="activeHeadlines__card">
                     <article>
                       <p>{article.author}</p>
