@@ -22,7 +22,7 @@ export const headlinesArray: HLArrayProps[] = [
     country: "China",
     handle: "cn",
     url: "https://newsapi.org/v2/top-headlines?country=cn&apiKey=",
-    active: false,
+    active: true,
   },
   {
     country: "France",
