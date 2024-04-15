@@ -1,18 +1,25 @@
 import "./App.css";
+import { useEffect, useState } from "react";
 import { headlinesArray } from "./utils/headlines.js";
 import useFetchAllHL from "./hooks/useFetchAllHL.js";
-import { useEffect, useState } from "react";
+import updateDisplayedHLs from "./utils/updateDisplayedHLs.js";
 
 console.clear();
 
 function App() {
   const [allHeadlines, setAllHeadlines] = useState(headlinesArray);
-  const [activeHeadlines, setActiveHeadlines] = useFetchAllHL(allHeadlines);
+  const [displayedHLs, setDisplayedHLs] = useFetchAllHL(allHeadlines);
 
+  /**
+   * TOGGLES COUNTRY SYMBOLS by click of its handle
+   *
+   * After clicking a country handle, var allHeadlines is updated.
+   * @param e buttonClickEvent(e)
+   */
   const handleActivateHL = (e: BtnClickEvent) => {
     const clickedHandle = (e.target as HTMLButtonElement).textContent;
-    console.log(clickedHandle);
-    // console.log(...allHeadlines);
+
+    // console.log(updateDisplayedHLs(allHeadlines));
 
     const updatedArray = allHeadlines.map((hl) => {
       if (hl.handle === clickedHandle) {
@@ -21,12 +28,17 @@ function App() {
         return hl;
       }
     });
+
+    console.log(...updatedArray);
     setAllHeadlines(updatedArray);
+
+    //CONSOLE: console.log(updateDisplayedHLs(allHeadlines));
+    console.log(...displayedHLs);
   };
 
   useEffect(() => {
     console.log(...allHeadlines);
-  }, [allHeadlines]);
+  }, []);
 
   return (
     <div className="container">
@@ -35,13 +47,18 @@ function App() {
       <header className="header row">
         <h1 className="header__title">My News Compilation</h1>
         {/* <p className="addCountry">Add country</p> */}
-        {activeHeadlines && (
+        {displayedHLs && (
           <div className="allHandles__container">
             <ul className="allHandles__list" role="list">
               {headlinesArray.map((hl, i) =>
-                hl.active === true ? (
+                hl.active ? (
                   <li key={i} className="allHandles__card active">
-                    <button className="allHandles__button">{hl.handle}</button>
+                    <button
+                      className="allHandles__button"
+                      onClick={(e: BtnClickEvent) => handleActivateHL(e)}
+                    >
+                      {hl.handle}
+                    </button>
                   </li>
                 ) : (
                   <li key={i} className="allHandles__card">
@@ -63,10 +80,10 @@ function App() {
       <main>
         {/* ##########################  2.1 PICKED COUNTRIES  ######## */}
         {/* ########################################################## */}
-        {activeHeadlines && (
+        {displayedHLs && (
           <div className="container__displayedCountries">
             <ul className="displayedCountries__list row gap1" role="list">
-              {activeHeadlines.map((country, j) => (
+              {displayedHLs.map((country, j) => (
                 <li key={j} className="displayedCountries__cards">
                   <button className="country__button">
                     {country[0].country}
@@ -79,8 +96,8 @@ function App() {
         {/* ##########################  2.2 HEADLINES  ############### */}
         {/* ########################################################## */}
         <section className="col gap1">
-          {activeHeadlines &&
-            activeHeadlines.map((country, i) => (
+          {displayedHLs &&
+            displayedHLs.map((country, i) => (
               <ul
                 key={i}
                 role="list"
