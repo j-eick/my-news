@@ -8,9 +8,10 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
   const [curatedHLs, setCuratedHLs] = useState<CuratedHeadlineProps[][]>([]);
 
   useEffect(() => {
+    
     //---1. filtering for headlines => "active: true"
     //---2. concatinating url + apiKey
-    const activeHeadlines: string[] = uncuratedHLs
+    const activeHeadlines: string[] = allHeadlines
       .filter((item: UncuratedHLArrayProps) => item.active == true)
       .map(
         (item: UncuratedHLArrayProps) => item.url + import.meta.env.VITE_apiKEY
@@ -23,8 +24,8 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
 
     //---checking localStorage
     const dataFromStorage = localStorage.getItem("localData");
-    //---IF localStorage has NO DATA
-    //---OR updateDisplayedHLs === true
+    
+    //---IF localStorage has NO DATA   OR   updateDisplayedHLs === true
     if (dataFromStorage == null || updateDisplayedHLs(allHeadlines)) {
       // console.log(updateDisplayedHLs(allHeadlines));
 
@@ -57,6 +58,7 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
      *          by adding fetched data to original allHeadlines.
      */
     async function fetchData(activeHeadlines: string[]) {
+
       const allArticlesByCountries: CuratedHeadlineProps[][] = [];
       for (const [i, headline] of activeHeadlines.entries()) {
         try {
@@ -84,22 +86,22 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
           console.error("Mööp: " + err);
         }
       }
-      //---setCuratedHLs(allArticlesByCountries);
+      setCuratedHLs(allArticlesByCountries);
       localStorage.setItem("localData", JSON.stringify(allArticlesByCountries));
 
-      fetchFromLS();
+      // fetchFromLS();
 
-      function fetchFromLS() {
-        const dataFromLS = localStorage.getItem("localData");
-        if (dataFromLS !== null) {
-          console.log("fetching from localStorage...");
-          const data = JSON.parse(dataFromLS);
-          //CONSOLE: console.log(data);
-          setCuratedHLs(data);
-        }
-      }
+      // function fetchFromLS() {
+      //   const dataFromLS = localStorage.getItem("localData");
+      //   if (dataFromLS !== null) {
+      //     console.log("fetching from localStorage...");
+      //     const data = JSON.parse(dataFromLS);
+           // CONSOLE: console.log(data);
+      //     setCuratedHLs(data);
+      //   }
+      // }
     }
-  }, [uncuratedHLs]);
+  }, [allHeadlines]);
 
   return [curatedHLs];
 }
