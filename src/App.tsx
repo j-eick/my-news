@@ -31,9 +31,7 @@ function App() {
 
   useEffect(() => {
     console.log(allHeadlines);
-    console.log(displayedHLs);
-    
-    
+    console.log(displayedHLs);    
   }, [allHeadlines])
   
 
@@ -42,7 +40,7 @@ function App() {
       {/* ############  1. HEADER  ################################### */}
       {/* ############################################################ */}
       <header className="header row">
-        <h1 className="header__title">My News Compilation</h1>
+        <h1 className="header__title">Pick your news</h1>
           <div className="allHandles__container">
             <ul className="allHandles__list" role="list">
               {
