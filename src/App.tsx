@@ -2,7 +2,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { headlinesArray } from "./utils/headlines.js";
 import useFetchAllHL from "./hooks/useFetchAllHL.js";
-import updateDisplayedHLs from "./utils/updateDisplayedHLs.js";
 
 console.clear();
 
@@ -19,25 +18,25 @@ function App() {
   const handleActivateHL = (e: BtnClickEvent) => {
     const clickedHandle = (e.target as HTMLButtonElement).textContent;
 
-    // console.log(updateDisplayedHLs(allHeadlines));
-
-    const updatedArray = allHeadlines.map((hl) => {
-      if (hl.handle === clickedHandle) {
+    const updatedArray = allHeadlines.map((hl) => {      
+      if (hl.handle === clickedHandle) {        
         return { ...hl, active: !hl.active };
       } else {
         return hl;
       }
     });
 
-    console.log(...updatedArray);
+    console.log(updatedArray);
     setAllHeadlines(updatedArray);
-
-    //CONSOLE: console.log(updateDisplayedHLs(allHeadlines));
-    console.log(...displayedHLs);
   };
 
   useEffect(() => {
-    console.log(...allHeadlines);
+    
+    console.log(displayedHLs);
+    console.log(allHeadlines);
+    
+    console.log(headlinesArray);
+    
   }, []);
 
   return (
@@ -47,30 +46,32 @@ function App() {
       <header className="header row">
         <h1 className="header__title">My News Compilation</h1>
         {/* <p className="addCountry">Add country</p> */}
-        {displayedHLs && (
+        {allHeadlines && (
           <div className="allHandles__container">
             <ul className="allHandles__list" role="list">
-              {headlinesArray.map((hl, i) =>
-                hl.active ? (
-                  <li key={i} className="allHandles__card active">
-                    <button
-                      className="allHandles__button"
-                      onClick={(e: BtnClickEvent) => handleActivateHL(e)}
-                    >
-                      {hl.handle}
-                    </button>
-                  </li>
-                ) : (
-                  <li key={i} className="allHandles__card">
-                    <button
-                      className="allHandles__button"
-                      onClick={(e: BtnClickEvent) => handleActivateHL(e)}
-                    >
-                      {hl.handle}
-                    </button>
-                  </li>
+              {
+                allHeadlines.map((hl, i) =>
+                  hl.active ? (
+                    <li key={i} className="allHandles__card active">
+                      <button
+                        className="allHandles__button"
+                        onClick={(e: BtnClickEvent) => handleActivateHL(e)}
+                      >
+                        {hl.handle}
+                      </button>
+                    </li>
+                  ) : (
+                    <li key={i} className="allHandles__card">
+                      <button
+                        className="allHandles__button"
+                        onClick={(e: BtnClickEvent) => handleActivateHL(e)}
+                      >
+                        {hl.handle}
+                      </button>
+                    </li>
+                  )
                 )
-              )}
+              }
             </ul>
           </div>
         )}
@@ -83,13 +84,15 @@ function App() {
         {displayedHLs && (
           <div className="container__displayedCountries">
             <ul className="displayedCountries__list row gap1" role="list">
-              {displayedHLs.map((country, j) => (
-                <li key={j} className="displayedCountries__cards">
-                  <button className="country__button">
-                    {country[0].country}
-                  </button>
-                </li>
-              ))}
+              {
+                displayedHLs.map((country, j) => (
+                  <li key={j} className="displayedCountries__cards">
+                    <button className="country__button">
+                      {country[0].country}
+                    </button>
+                  </li>
+                ))
+              }
             </ul>
           </div>
         )}
