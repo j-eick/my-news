@@ -9,12 +9,11 @@ function App() {
   const [allHeadlines, setAllHeadlines] = useState(headlinesArray);
   const [displayedHLs, setDisplayedHLs] = useFetchAllHL(allHeadlines);
 
-  /**
-   * TOGGLES COUNTRY SYMBOLS by click of its handle
+  /** TOGGLES COUNTRY SYMBOLS by click of its handle
    *
    * After clicking a country handle, var allHeadlines is updated.
    * @param e buttonClickEvent(e)
-   */
+*/
   const handleActivateHL = (e: BtnClickEvent) => {
     const clickedHandle = (e.target as HTMLButtonElement).textContent;
 
@@ -31,11 +30,12 @@ function App() {
   };
 
   useEffect(() => {
-    
-    console.log(displayedHLs);
     console.log(allHeadlines);
+    console.log(displayedHLs);
     
-  }, []);
+    
+  }, [allHeadlines])
+  
 
   return (
     <div className="container">
@@ -43,12 +43,10 @@ function App() {
       {/* ############################################################ */}
       <header className="header row">
         <h1 className="header__title">My News Compilation</h1>
-        {/* <p className="addCountry">Add country</p> */}
-        {allHeadlines && (
           <div className="allHandles__container">
             <ul className="allHandles__list" role="list">
               {
-                allHeadlines.map((hl, i) =>
+                allHeadlines.map((hl, i) => (                
                   hl.active ? (
                     <li key={i} className="allHandles__card active">
                       <button
@@ -69,31 +67,30 @@ function App() {
                     </li>
                   )
                 )
-              }
+              )}
             </ul>
           </div>
-        )}
       </header>
       {/* ############  2. MAIN  ##################################### */}
       {/* ############################################################ */}
       <main>
         {/* ##########################  2.1 PICKED COUNTRIES  ######## */}
         {/* ########################################################## */}
-        {displayedHLs && (
+        {/* {allHeadlines && (
           <div className="container__displayedCountries">
             <ul className="displayedCountries__list row gap1" role="list">
-              {
-                displayedHLs.map((country, j) => (
+              {allHeadlines.map((country, j) => (
+                country.active ? (
                   <li key={j} className="displayedCountries__cards">
                     <button className="country__button">
-                      {country[0].country}
+                      {country}
                     </button>
                   </li>
-                ))
+                )))
               }
             </ul>
           </div>
-        )}
+        )} */}
         {/* ##########################  2.2 HEADLINES  ############### */}
         {/* ########################################################## */}
         <section className="col gap1">
