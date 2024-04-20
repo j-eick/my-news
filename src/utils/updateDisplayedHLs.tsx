@@ -12,16 +12,14 @@ type UncuratedHLArrayProps = {
  *                1) arrays have different lengths
  *                2) userArray !== localStorageArray
  */
-export default function updateDisplayedHLs(
-  allHeadlines: UncuratedHLArrayProps[]
-) {
+export default function updateDisplayedHLs( allHeadlines: UncuratedHLArrayProps[] ) {
   let needToUpdate: boolean = false;
 
   //---get userArray
   const userHLs = allHeadlines
     .filter((hl) => hl.active)
     .map((country) => country.handle);
-  console.log("userArray: " + userHLs);
+  // CONSOLE: console.log("userArray: " + userHLs);
 
   //---get localStorageArray
   let localSArray: string[] = [];
@@ -30,7 +28,10 @@ export default function updateDisplayedHLs(
     //---get country handles from localStorage
     const data = JSON.parse(dataFromLS);
     localSArray = data.map((item) => item[0].handle);
-    console.log("localStorageArray: " + localSArray);
+    console.log(
+      "userArray: " + userHLs + "\n" +
+      "localStorageArray: " + localSArray
+    );
   }
 
   //---checks country handles
@@ -41,14 +42,15 @@ export default function updateDisplayedHLs(
     const check: boolean = localSArray.includes(interim);
     truthyArray.push(check);
   }
-  console.log(truthyArray);
-  console.log(truthyArray.includes(false));
+  // CONSOLE: console.log(truthyArray);
+  // CONSOLE: console.log(truthyArray.includes(false));
 
   //---userArray !== localStorageArray
   if (truthyArray.includes(false) || userHLs.length !== localSArray.length) {
     needToUpdate = true;
     return needToUpdate;
   } else {
+    needToUpdate = false;
     return needToUpdate;
   }
 }
