@@ -4,7 +4,6 @@ import updateDisplayedHLs from "../utils/updateDisplayedHLs";
 console.clear();
 
 export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
-  const [uncuratedHLs] = useState<UncuratedHLArrayProps[]>(allHeadlines);
   const [curatedHLs, setCuratedHLs] = useState<CuratedHeadlineProps[][]>([]);
 
   useEffect(() => {
@@ -22,12 +21,11 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
         updateDisplayedHLs(allHeadlines).toString().toUpperCase()
     );
 
-    //---checking localStorage
+    //---check local-storage
     const dataFromStorage = localStorage.getItem("localData");
-    
-    //---IF localStorage has NO DATA   OR   updateDisplayedHLs === true
+    //---IF localStorage has NO DATA   OR   userHL differs from local-storage-HLs
     if (dataFromStorage == null || updateDisplayedHLs(allHeadlines)) {
-      // console.log(updateDisplayedHLs(allHeadlines));
+      console.log(updateDisplayedHLs(allHeadlines));
 
       console.log("Status: empty localStorage || needs update");
       //---fetch from api
@@ -38,10 +36,12 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
       console.log("fetching from localStorage...");
       try {
         const dataFromLS = localStorage.getItem("localData");
+        console.log(curatedHLs);
+        
         if (dataFromLS !== null) {
           const data = JSON.parse(dataFromLS);
-          //CONSOLE: console.log("localStorage-data:");
-          //CONSOLE: console.log(data);
+          console.log("localStorage-data: ");
+          console.log(data);
           setCuratedHLs(data);
           console.log("fetching done");
         }
@@ -55,8 +55,7 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
      *  1. loop over all active headlines
      *    1.1.  fetching data
      *    1.2.  loop over articles and create new article objects
-     *          by adding fetched data to original allHeadlines.
-     */
+     *          by adding fetched data to original allHeadlines.   */
     async function fetchData(activeHeadlines: string[]) {
 
       const allArticlesByCountries: CuratedHeadlineProps[][] = [];
