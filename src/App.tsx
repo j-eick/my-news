@@ -26,7 +26,7 @@ function App() {
       }
     });
 
-    console.log(updatedArray);
+    // CONSOLE: console.log(updatedArray);
     setAllHeadlines(updatedArray);
   };
 
@@ -34,8 +34,6 @@ function App() {
     
     console.log(displayedHLs);
     console.log(allHeadlines);
-    
-    console.log(headlinesArray);
     
   }, []);
 
