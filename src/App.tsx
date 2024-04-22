@@ -7,7 +7,7 @@ console.clear();
 
 function App() {
   const [allHeadlines, setAllHeadlines] = useState(headlinesArray);
-  const [displayedHLs, setDisplayedHLs] = useFetchAllHL(allHeadlines);
+  const [displayedHLs] = useFetchAllHL(allHeadlines);
 
   /** TOGGLES COUNTRY SYMBOLS by click of its handle
    *
