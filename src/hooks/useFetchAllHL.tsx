@@ -14,7 +14,7 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
       .filter((item: UncuratedHLArrayProps) => item.active == true)
       .map(
         (item: UncuratedHLArrayProps) => item.url + import.meta.env.VITE_apiKEY
-      );
+      );    
 
     console.log(
       "need to re-fetch: " +
@@ -63,28 +63,34 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
         try {
           const res = await fetch(headline);
           const data = await res.json();
-          const articles = await data.articles;
+          const articles = await data.articles;          
 
           //---curate new headline objects
           const curatedArticlesArray: CuratedHeadlineProps[] = [];
           for (const article of articles) {
             const curatedHL: CuratedHeadlineProps = {
               //add keyValues from original headline
+
+              // FIXME: allHeadlines refers to initial array and doesn't
+              //        take new order of content of activeHeadlines into
+              //        consideration. 
+              //        =>  While allHeadlines has fix order, activeHeadlines
+              //            can have different order all the time. 
               country: allHeadlines[i].country,
               handle: allHeadlines[i].handle,
-              //active: allHeadlines[i].active,
-              //spread article content
+              active: allHeadlines[i].active,
               ...article,
             };
+            
             curatedArticlesArray.push(curatedHL);
           }
           allArticlesByCountries.push(curatedArticlesArray);
 
-          //---console.log(allArticlesByCountries);
         } catch (err) {
           console.error("Mööp: " + err);
         }
       }
+      
       setCuratedHLs(allArticlesByCountries);
       localStorage.setItem("localData", JSON.stringify(allArticlesByCountries));
 
