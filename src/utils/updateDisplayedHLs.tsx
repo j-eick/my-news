@@ -5,6 +5,23 @@ type UncuratedHLArrayProps = {
   active: boolean;
 };
 
+type DataProp = {
+  country: string;
+  handle: string;
+  active: boolean;
+  author: string;
+  content: null | string;
+  description: string | null;
+  publishedAt: string;
+  source: {
+    id: string,
+    name: string,
+  },
+  title: string;
+  url: string;
+  urlToImage: null | string;
+};
+
 /**
  *
  * @param allHeadlines
@@ -26,7 +43,9 @@ export default function updateDisplayedHLs( allHeadlines: UncuratedHLArrayProps[
   const dataFromLS = localStorage.getItem("localData");
   if (dataFromLS !== null) {
     //---get country handles from localStorage
-    const data = JSON.parse(dataFromLS);
+    const data: DataProp[][] = JSON.parse(dataFromLS);
+    console.log(data);
+    
     localSArray = data.map((item) => item[0].handle);
     console.log(
       "userArray: " + userHLs + "\n" +
