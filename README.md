@@ -1,4 +1,4 @@
-# Pick you news
+# Pick your news
 
 This little tool fetches news from different sources and curates an overview of the ones the user wants to see. <br>
 Whilst the number of sources preferably increases continuously, the way the content is presented will change with every iteration. We'll see how things develop. 
