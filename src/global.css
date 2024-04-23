@@ -8,7 +8,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --fontSize__card__title: 1rem;
+  --fontSize__card__title: 1.2rem;
 
   --step--2: clamp(0.6944rem, 0.6577rem + 0.1836vi, 0.8rem);
   --step--1: clamp(0.8333rem, 0.7754rem + 0.2899vi, 1rem);

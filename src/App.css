@@ -110,7 +110,7 @@
 }
 
 .activeHeadlines__card {
-  padding: 1em;
+  padding: 1.25em;
   height: 20rem;
   min-width: 18rem;
 
@@ -121,4 +121,5 @@
 
 .card__title {
   font-size: var(--fontSize__card__title);
+  color: black
 }
