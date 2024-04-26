@@ -11,9 +11,8 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
     //---2. concatinating url + apiKey
     const activeHeadlines: string[] = allHeadlines
       .filter((item: UncuratedHLArrayProps) => item.active == true)
-      .map((item: UncuratedHLArrayProps) => item.url);
-    //  + import.meta.env.VITE_apiKEY
-    console.log("****haro should not be undefined:", import.meta.env.VITE_apiKEY);
+      .map((item: UncuratedHLArrayProps) => item.url + import.meta.env.VITE_apiKEY);
+
     console.log("need to re-fetch: " + updateDisplayedHLs(allHeadlines).toString().toUpperCase());
 
     //---check local-storage

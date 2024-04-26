@@ -13,12 +13,12 @@ function App() {
    *
    * After clicking a country handle, var allHeadlines is updated.
    * @param e buttonClickEvent(e)
-*/
+   */
   const handleActivateHL = (e: BtnClickEvent) => {
     const clickedHandle = (e.target as HTMLButtonElement).textContent;
 
-    const updatedArray = allHeadlines.map((hl) => {      
-      if (hl.handle === clickedHandle) {        
+    const updatedArray = allHeadlines.map((hl) => {
+      if (hl.handle === clickedHandle) {
         return { ...hl, active: !hl.active };
       } else {
         return hl;
@@ -31,9 +31,8 @@ function App() {
 
   useEffect(() => {
     console.log(allHeadlines);
-    console.log(displayedHLs);    
-  }, [allHeadlines])
-  
+    console.log(displayedHLs);
+  }, [allHeadlines]);
 
   return (
     <div className="container">
@@ -41,33 +40,25 @@ function App() {
       {/* ############################################################ */}
       <header className="header row">
         <h1 className="header__title">Pick your news</h1>
-          <div className="allHandles__container">
-            <ul className="allHandles__list" role="list">
-              {
-                allHeadlines.map((hl, i) => (                
-                  hl.active ? (
-                    <li key={i} className="allHandles__card active">
-                      <button
-                        className="allHandles__button"
-                        onClick={(e: BtnClickEvent) => handleActivateHL(e)}
-                      >
-                        {hl.handle}
-                      </button>
-                    </li>
-                  ) : (
-                    <li key={i} className="allHandles__card">
-                      <button
-                        className="allHandles__button"
-                        onClick={(e: BtnClickEvent) => handleActivateHL(e)}
-                      >
-                        {hl.handle}
-                      </button>
-                    </li>
-                  )
-                )
-              )}
-            </ul>
-          </div>
+        <div className="allHandles__container">
+          <ul className="allHandles__list" role="list">
+            {allHeadlines.map((hl, i) =>
+              hl.active ? (
+                <li key={i} className="allHandles__card active">
+                  <button className="allHandles__button" onClick={(e: BtnClickEvent) => handleActivateHL(e)}>
+                    {hl.handle}
+                  </button>
+                </li>
+              ) : (
+                <li key={i} className="allHandles__card">
+                  <button className="allHandles__button" onClick={(e: BtnClickEvent) => handleActivateHL(e)}>
+                    {hl.handle}
+                  </button>
+                </li>
+              )
+            )}
+          </ul>
+        </div>
       </header>
       {/* ############  2. MAIN  ##################################### */}
       {/* ############################################################ */}
@@ -91,14 +82,10 @@ function App() {
         )} */}
         {/* ##########################  2.2 HEADLINES  ############### */}
         {/* ########################################################## */}
-        <section className="col gap1">
-          {displayedHLs &&
-            displayedHLs.map((country, i) => (
-              <ul
-                key={i}
-                role="list"
-                className="activeHeadlines__list row gap1"
-              >
+        {false ? (
+          <section className="col gap1">
+            {displayedHLs.map((country, i) => (
+              <ul key={i} role="list" className="activeHeadlines__list row gap1">
                 {country.map((article, k) => (
                   <li key={k} className="activeHeadlines__card">
                     <article>
@@ -112,7 +99,14 @@ function App() {
                 ))}
               </ul>
             ))}
-        </section>
+          </section>
+        ) : (
+          <div className="error__card">
+            <p className="error__card--text">
+              newsapi.org allows cors only for localhost 🤷🏻‍♂️ checkout readme.md to see how this is supposed to look like
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );

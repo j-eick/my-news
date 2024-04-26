@@ -121,5 +121,20 @@
 
 .card__title {
   font-size: var(--fontSize__card__title);
-  color: black
+  color: black;
+}
+
+.error__card {
+  display: flex;
+  margin-top: 10rem;
+}
+
+.error__card--text {
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  text-align: center;
+  border-radius: 20px;
+  width: 250px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
