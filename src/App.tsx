@@ -82,7 +82,7 @@ function App() {
         )} */}
         {/* ##########################  2.2 HEADLINES  ############### */}
         {/* ########################################################## */}
-        {false ? (
+        {displayedHLs ? (
           <section className="col gap1">
             {displayedHLs.map((country, i) => (
               <ul key={i} role="list" className="activeHeadlines__list row gap1">
