@@ -7,19 +7,14 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
   const [curatedHLs, setCuratedHLs] = useState<CuratedHeadlineProps[][]>([]);
 
   useEffect(() => {
-    
     //---1. filtering for headlines => "active: true"
     //---2. concatinating url + apiKey
     const activeHeadlines: string[] = allHeadlines
       .filter((item: UncuratedHLArrayProps) => item.active == true)
-      .map(
-        (item: UncuratedHLArrayProps) => item.url + import.meta.env.VITE_apiKEY
-      );    
-
-    console.log(
-      "need to re-fetch: " +
-        updateDisplayedHLs(allHeadlines).toString().toUpperCase()
-    );
+      .map((item: UncuratedHLArrayProps) => item.url);
+    //  + import.meta.env.VITE_apiKEY
+    console.log("****haro should not be undefined:", import.meta.env.VITE_apiKEY);
+    console.log("need to re-fetch: " + updateDisplayedHLs(allHeadlines).toString().toUpperCase());
 
     //---check local-storage
     const dataFromStorage = localStorage.getItem("localData");
@@ -37,7 +32,7 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
       try {
         const dataFromLS = localStorage.getItem("localData");
         console.log(curatedHLs);
-        
+
         if (dataFromLS !== null) {
           const data = JSON.parse(dataFromLS);
           console.log("localStorage-data: ");
@@ -57,13 +52,12 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
      *    1.2.  loop over articles and create new article objects
      *          by adding fetched data to original allHeadlines.   */
     async function fetchData(activeHeadlines: string[]) {
-
       const allArticlesByCountries: CuratedHeadlineProps[][] = [];
       for (const [i, headline] of activeHeadlines.entries()) {
         try {
           const res = await fetch(headline);
           const data = await res.json();
-          const articles = await data.articles;          
+          const articles = await data.articles;
 
           //---curate new headline objects
           const curatedArticlesArray: CuratedHeadlineProps[] = [];
@@ -73,24 +67,23 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
 
               // FIXME: allHeadlines refers to initial array and doesn't
               //        take new order of content of activeHeadlines into
-              //        consideration. 
+              //        consideration.
               //        =>  While allHeadlines has fix order, activeHeadlines
-              //            can have different order all the time. 
+              //            can have different order all the time.
               country: allHeadlines[i].country,
               handle: allHeadlines[i].handle,
               active: allHeadlines[i].active,
               ...article,
             };
-            
+
             curatedArticlesArray.push(curatedHL);
           }
           allArticlesByCountries.push(curatedArticlesArray);
-
         } catch (err) {
           console.error("Mööp: " + err);
         }
       }
-      
+
       setCuratedHLs(allArticlesByCountries);
       localStorage.setItem("localData", JSON.stringify(allArticlesByCountries));
 
@@ -101,7 +94,7 @@ export default function useFetchAllHL(allHeadlines: UncuratedHLArrayProps[]) {
       //   if (dataFromLS !== null) {
       //     console.log("fetching from localStorage...");
       //     const data = JSON.parse(dataFromLS);
-           // CONSOLE: console.log(data);
+      // CONSOLE: console.log(data);
       //     setCuratedHLs(data);
       //   }
       // }
