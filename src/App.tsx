@@ -82,7 +82,12 @@ function App() {
         )} */}
         {/* ##########################  2.2 HEADLINES  ############### */}
         {/* ########################################################## */}
-        {displayedHLs ? (
+        <div className="error__card">
+          <p className="error__card--text">
+            newsapi.org allows cors only for localhost 🤷🏻‍♂️ checkout readme.md to see how this is supposed to look like
+          </p>
+        </div>
+        {displayedHLs && (
           <section className="col gap1">
             {displayedHLs.map((country, i) => (
               <ul key={i} role="list" className="activeHeadlines__list row gap1">
@@ -100,12 +105,6 @@ function App() {
               </ul>
             ))}
           </section>
-        ) : (
-          <div className="error__card">
-            <p className="error__card--text">
-              newsapi.org allows cors only for localhost 🤷🏻‍♂️ checkout readme.md to see how this is supposed to look like
-            </p>
-          </div>
         )}
       </main>
     </div>
